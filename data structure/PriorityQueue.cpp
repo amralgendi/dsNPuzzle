@@ -52,13 +52,16 @@ const PriorityQueue<ElementType> & PriorityQueue<ElementType>::operator=(const P
     if (this == &rightHandSide) {
         return *this;
     }
+    
     this->~PriorityQueue(); // destroy current linked list
     if (rightHandSide.empty()) { // empty queue
         myFront = myBack = 0;
         return *this;
     }
+    
     // Copy first node
     myFront = myBack = new QueueNode<ElementType>(*rightHandSide.myFront);
+    
     // Set pointer to run through rightHandSide's linked list
     QueueNodePointer rhsPtr = rightHandSide.myFront->next;
     while (rhsPtr != 0) {
@@ -66,6 +69,7 @@ const PriorityQueue<ElementType> & PriorityQueue<ElementType>::operator=(const P
         myBack = myBack->next;
         rhsPtr = rhsPtr->next;
     }
+    
     return *this;
 }
 
@@ -84,12 +88,19 @@ void PriorityQueue<ElementType>::enqueue(ElementType & value, int key) {
         return;
     }
     
-    QueueNodePointer ptr = myFront;
-    while (ptr != 0 && key ) {
+    QueueNodePointer start = myFront;
+    if (myFront->key >= key) {
+        newptr->next = myFront;
+        myFront = newptr;
+    } else {
+        while (start->next != NULL &&
+               start->next->key <= key) {
+            start = start->next;
+        }
         
+        newptr->next = start->next;
+        start->next = newptr;
     }
-    myBack->next = newptr;
-    myBack = newptr;
 }
 
 //--- Definition of display()
