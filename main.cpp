@@ -26,45 +26,6 @@ struct Node
     // stores the number of moves so far
     int level;
 };
-class Node {
-    public:
-        Node(int mat[N][N], int x, int y, int newX, int newY, int level, Node* parent){
-            this.parent = parent;
-        
-            // copy data from parent node to current node
-            memcpy(this.mat, mat, sizeof node->mat);
-        
-            // move tile by 1 position
-            swap(node.mat[x][y], node.mat[newX][newY]);
-        
-            // set number of misplaced tiles
-            node.cost = INT_MAX;
-        
-            // set number of moves so far
-            node.level = level;
-        
-            // update new blank tile coordinates
-            node.x = newX;
-            node.y = newY;
-        
-                }
-            private:
-            Node* parent;
-        
-            // stores matrix
-            int mat[N][N];
-        
-            // stores blank tile coordinates
-            int x, y;
-        
-            // stores the number of misplaced tiles
-            int cost;
-        
-            // stores the number of moves so far
-            int level;
-
-}
- 
 // Function to print N x N matrix
 int printMatrix(int mat[N][N])
 {
@@ -235,7 +196,8 @@ int findXPosition(int puzzle[N][N])
     for (int i = N - 1; i >= 0; i--)
         for (int j = N - 1; j >= 0; j--)
             if (puzzle[i][j] == 0)
-                return N - i;      
+                return N - i;     
+    return 0; 
 }
  
 // This function returns true if given
