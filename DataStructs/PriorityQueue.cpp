@@ -1,21 +1,21 @@
 //
-//  Queue.cpp
+//  PriorityQueue.cpp
 //  Project
 //
 //  Created by Mohamed Salah on 29/11/2022.
 //
 
-#include "Queue.hpp"
-#include "Tree.hpp"
+#include "PriorityQueue.hpp"
+#include "PuzzleState.hpp"
 
-//--- Definition of Queue constructor
+//--- Definition of PriorityQueue constructor
 
 template <typename ElementType>
-Queue<ElementType>:: Queue(): myFront(0), myBack(0) { }
+PriorityQueue<ElementType>:: PriorityQueue(): myFront(0), myBack(0) { }
 
-//--- Definition of Queue copy constructor
+//--- Definition of PriorityQueue copy constructor
 template <typename ElementType>
-Queue<ElementType>:: Queue(const Queue<ElementType> & original) {
+PriorityQueue<ElementType>:: PriorityQueue(const PriorityQueue<ElementType> & original) {
     myFront = myBack = 0;
     if (original.empty()) {
         return;
@@ -33,9 +33,9 @@ Queue<ElementType>:: Queue(const Queue<ElementType> & original) {
     }
 }
 
-//--- Definition of Queue destructor
+//--- Definition of PriorityQueue destructor
 template <typename ElementType>
-Queue<ElementType>::~Queue() {
+PriorityQueue<ElementType>::~PriorityQueue() {
     // Set pointer to run through the queue
     QueueNodePointer prev = myFront, ptr;
     while (prev != 0) {
@@ -48,12 +48,12 @@ Queue<ElementType>::~Queue() {
 
 //--- Definition of assignment operator
 template <typename ElementType>
-const Queue<ElementType> & Queue<ElementType>::operator=(const Queue<ElementType> & rightHandSide) {
+const PriorityQueue<ElementType> & PriorityQueue<ElementType>::operator=(const PriorityQueue<ElementType> & rightHandSide) {
     if (this == &rightHandSide) {
         return *this;
     }
     
-    this->~Queue(); // destroy current linked list
+    this->~PriorityQueue(); // destroy current linked list
     if (rightHandSide.empty()) { // empty queue
         myFront = myBack = 0;
         return *this;
@@ -75,52 +75,61 @@ const Queue<ElementType> & Queue<ElementType>::operator=(const Queue<ElementType
 
 //--- Definition of empty()
 template <typename ElementType>
-bool Queue<ElementType>::empty() const {
+bool PriorityQueue<ElementType>::empty() const {
     return (myFront == 0);
 }
 
 //--- Definition of enqueue()
 template <typename ElementType>
-void Queue<ElementType>::enqueue(ElementType & value, int key) {
+void PriorityQueue<ElementType>::enqueue(ElementType & value, int key) {
     QueueNodePointer newptr = new QueueNode<ElementType>(value, key);
     if (empty()) {
         myFront = myBack = newptr;
         return;
     }
     
-    QueueNodePointer ptr = myFront;
-    while (ptr != 0 && ptr->key >= key) {
-        ptr = ptr->next;
+    QueueNodePointer start = myFront;
+    if (myFront->key >= key) {
+        newptr->next = myFront;
+        myFront = newptr;
+    } else {
+        while (start->next != NULL &&
+               start->next->key <= key) {
+            start = start->next;
+        }
+        
+        newptr->next = start->next;
+        start->next = newptr;
     }
-    myBack->next = newptr;
-    myBack = newptr;
 }
 
 //--- Definition of display()
 template <typename ElementType>
-void Queue<ElementType>::display(ostream & out) const {
+void PriorityQueue<ElementType>::display(ostream & out) const {
     QueueNodePointer ptr;
+    out << "start" << endl;
     for (ptr = myFront; ptr != 0; ptr = ptr->next)
-        out << ptr->data << "  ";
-    out << endl;
+        out << ptr->data << endl;
+    
+    out << "end" << endl;
     
 }
 
 //--- Definition of output operator
 template <typename ElementType>
-ostream & operator<< (ostream & out, const Queue<ElementType> & aQueue) {
+ostream & operator<< (ostream & out, const PriorityQueue<ElementType> & aQueue) {
     aQueue.display(out);
     return out;
 }
 
 //--- Definition of front()
 template <typename ElementType>
-ElementType Queue<ElementType>::front() const {
+ElementType PriorityQueue<ElementType>::front() const {
     if (!empty()) {
         return (myFront->data);
     }
     
-    cerr << "*** Queue is empty "
+    cerr << "*** PriorityQueue is empty "
     " -- returning garbage ***\n";
     ElementType * temp = new(ElementType);
     ElementType garbage = *temp;     // "Garbage" value
@@ -130,13 +139,13 @@ ElementType Queue<ElementType>::front() const {
 
 //--- Definition of dequeue()
 template <typename ElementType>
-void Queue<ElementType>::dequeue() {
+void PriorityQueue<ElementType>::dequeue() {
     if (empty()) {
-        cerr << "*** Queue is empty -- can't remove a value ***\n";
+        cerr << "*** PriorityQueue is empty -- can't remove a value ***\n";
         return;
     }
     
-    Queue<ElementType>::QueueNodePointer ptr = myFront;
+    PriorityQueue<ElementType>::QueueNodePointer ptr = myFront;
     myFront = myFront->next;
     delete ptr;
     if (myFront == 0)     // queue is now empty
@@ -144,5 +153,5 @@ void Queue<ElementType>::dequeue() {
 }
 
 
-template class Queue<int>;
-template class Queue<TreeNode>;
+template class PriorityQueue<int>;
+template class PriorityQueue<PuzzleState>;
