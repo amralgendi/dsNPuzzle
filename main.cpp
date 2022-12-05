@@ -7,9 +7,6 @@
 
 #include "PuzzleSolver.hpp"
 #include "stdio.h"
-#include <cstring>
-#include <limits.h>
-#include <iostream>
 
 using namespace std;
 
