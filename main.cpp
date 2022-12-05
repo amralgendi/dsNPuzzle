@@ -78,8 +78,8 @@ void test4N() {
     int ** dynamicFirstState = getTestCase(initialMat);
     int ** dynamicFinalState = getTestCase(finalMat);
     
-    PuzzleState * initialState = new PuzzleState(dynamicFirstState, N, 2, 0, 2, 0, 0);
-    PuzzleState * finalState = new PuzzleState(dynamicFinalState, N, 2, 2, 3, 3, -1);
+    PuzzleState * initialState = new PuzzleState(dynamicFirstState, N, 3, 0, 2, 0, 0);
+    PuzzleState * finalState = new PuzzleState(dynamicFinalState, N, 3, 3, 3, 3, -1);
     
     solve(*initialState, *finalState);
 }
