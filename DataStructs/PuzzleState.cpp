@@ -13,9 +13,22 @@
 
 using namespace std;
 
-// MARK: - Constructor
+// MARK: - Constructors
 
-PuzzleState:: PuzzleState(int ** _parentMat, int _N, int _x, int _y, int _newX, int _newY, int _level, int _cost): x(_newX), y(_newY), N(_N), cost(_cost), level(_level) {
+/// Constructor for initlizing the puzzle state
+/// @param _parentMat parent matrix to generate from new state by swapping location of empty space
+/// @param _N dynamic 2d array size
+/// @param _x parent blank tile x coordinate
+/// @param _y parent blank tile y coordinate
+/// @param _newX  current state blank tile x coordinate
+/// @param _newY current state blank tile y coordinate
+/// @param _level current state level
+/// @param _cost default val(INT_MAX) the number of moves so far in the tree of states
+PuzzleState:: PuzzleState(int ** _parentMat,
+                          int _N,
+                          int _x, int _y,
+                          int _newX, int _newY,
+                          int _level, int _cost): x(_newX), y(_newY), N(_N), cost(_cost), level(_level) {
     
     mat = new int*[N];
     for (int i = 0; i < N; i++) {
@@ -27,18 +40,11 @@ PuzzleState:: PuzzleState(int ** _parentMat, int _N, int _x, int _y, int _newX, 
     swap(mat[_x][_y], mat[_newX][_newY]);
 }
 
-PuzzleState:: PuzzleState(PuzzleState & copy) {
-    mat = copy.mat;
-    N = copy.N;
-    x = copy.x;
-    y = copy.y;
-    cost = copy.cost;
-    level = copy.level;
-}
-
 PuzzleState:: PuzzleState() { }
 
+// MARK: - Main Methods
 
+/// Print current state's matrix
 void PuzzleState:: printMatrix() const {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++)
@@ -47,6 +53,7 @@ void PuzzleState:: printMatrix() const {
     }
 }
 
+/// << operator overloading
 ostream & operator<< (ostream & out, const PuzzleState & puzzleState) {
     puzzleState.printMatrix();
     return out;
